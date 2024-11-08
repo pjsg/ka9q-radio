@@ -89,12 +89,13 @@ char const *Recordings = ".";
 struct {
   double cycle_time;
   double transmission_time;
+  double early_start_time;
   char const *decode;
 } Modetab[] = {
-  { 120, 114, "wsprd"},
-  { 15, 12.64, "decode_ft8"},
-  { 7.5, 4.48, "decode_ft8"},  
-  { 0, 0, NULL},
+  { 120, 118, 1, "wsprd"},
+  { 15, 14.50, 1, "decode_ft8"},
+  { 7.5, 7.50, 1, "decode_ft8"},  
+  { 0, 0, 0, NULL},
 };
 enum {
   WSPR,
@@ -215,7 +216,8 @@ void input_loop(){
     socklen_t socksize = sizeof(Sender);
     int size = recvfrom(Input_fd,buffer,sizeof(buffer),0,&Sender,&socksize);
     // stash time now in case we are slowed by the code below
-    int64_t const now = utc_time_ns();
+    // Offset slightly so that we start recording early
+    int64_t const now = utc_time_ns() + (int64_t) (Modetab[Mode].early_start_time * BILLION);
 
     if(size <= 0){    // ??
       perror("recvfrom");
