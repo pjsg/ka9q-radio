@@ -94,7 +94,7 @@ struct {
 } Modetab[] = {
   { 120, 118, 1, "wsprd"},
   { 15, 14.50, 1, "decode_ft8"},
-  { 7.5, 7.50, 1, "decode_ft8"},  
+  { 7.5, 7.0, 1, "decode_ft8"},
   { 0, 0, 0, NULL},
 };
 enum {
